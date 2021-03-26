@@ -3,11 +3,66 @@
  */
 
 import org.junit.Test;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AppTest {
-//    @Test public void testAppHasAGreeting() {
-//        App classUnderTest = new App();
-//
-//    }
+
+        BufferedImage image = null;
+        File inputImagePath = new File("/Users/matthewsimms/Documents/projects/401/bitmap-transformer/app/src/main/resources/AmFlagBit.bmp");
+
+    @Test public void getPixelsTest() {
+        try{
+            image = ImageIO.read(inputImagePath);
+        }catch(IOException e){
+            System.out.println(e);
+            System.out.println("something Went wrong");
+        }
+        System.out.println("this is only a test");
+        int width = image.getWidth();
+        int height = image.getHeight();
+        int expected = width * height;
+        List list = Bitmap.getList(image);
+        int actual = list.size();
+        assertEquals("The test should pass if the list is the same size as expected", expected , actual);
+    }
+
+    @Test public void getMeasurementsTest() {
+        try{
+            image = ImageIO.read(inputImagePath);
+        }catch(IOException e){
+            System.out.println(e);
+            System.out.println("something Went wrong");
+        }
+        int width = image.getWidth();
+        int height = image.getHeight();
+        String expected = ("width: " + width +  "height: " + height);
+        int actualWidth = Bitmap.getMeasurements(image)[0];
+        int actualHeight = Bitmap.getMeasurements(image)[1];
+        String actual = ("width: " + actualWidth +  "height: " + actualHeight);
+        assertEquals("The test shoudl pass if both are equal", expected, actual);
+
+    }
+    @Test public void getGreyTest() {
+        try{
+            image = ImageIO.read(inputImagePath);
+        }catch(IOException e){
+            System.out.println(e);
+            System.out.println("something Went wrong");
+        }
+        int red = Bitmap.getGrey(20,0,image).getRed();
+        int blue = Bitmap.getGrey(20,0,image).getBlue();
+        int green = Bitmap.getGrey(20,0,image).getGreen();
+        boolean actual = (red == blue && blue == green);
+        assertTrue( "The test passes if it true", actual);
+        System.out.println(Bitmap.getGrey(20,0,image).getRed());
+    }
+
+
 }
